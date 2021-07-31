@@ -1,0 +1,108 @@
+{% extends "base.html" %}
+{% block title %}Explore{% endblock %}
+{% block content %}
+
+<div class="jumbotron text-center">
+    <div class="container">
+        <h1 class="jumbotron-heading">
+            Find a Study
+        </h1>
+        <p class="lead text-muted">
+            If you want to go fast, go alone, If you want to go far, go together.
+        </p>
+
+        <form method="GET" action="{{ url_for('study_page.explore') }}">
+            <div class="input-group">
+                <input type="text" class="form-control" placeholder="Search for place..."
+                       id="autocomplete">
+                <input type="hidden" name="place" id="place">
+                <input type="hidden" name='lng' id="lng">
+                <input type="hidden" name="lat" id="lat">
+                <span class="input-group-btn">
+                    <button class="btn btn-secondary" type="submit">
+                        Go!
+                    </button>
+                </span>
+            </div>
+        </form>
+    </div>
+
+</div>
+
+{% if studies and studies.pages > 0 %}
+<p class="text-muted text-center">
+    Study near {{ place }}
+</p>
+
+
+<div class="row">
+    {% for study in studies.items %}
+    <div class="col-md-6 study-item">
+        <div class="card">
+            <a href="{{ url_for('study_page.public', id=study.id) }}" target="_blank">
+            {% if study.study_photo %}
+            <img class="card-img-top study-photo-item" src="{{ study.study_photo}}">
+            {% else %}
+            <img class="card-img-top study-photo-item" src="{{ url_for('static', filename='img/study.png')}}">
+            {% endif %}
+            </a>
+            <div class="card-block">
+                <h4 class="card-title">
+                    {{ study.name }}
+                </h4>
+                <p class="card-text">
+                    {{ study.description[:150] }}
+                </p>
+                <p class="card-text">
+                    <i class="fa fa-map-marker" aria-hidden="true"></i>
+
+                    {{ study.place }}
+                    </a>
+                    <br>
+                    <i class="fa fa-clock-o" aria-hidden="true"></i>
+                    {{ study.start_datetime.strftime("%Y-%m-%d %I:%M%p") }}
+                    <br>
+                    <i class="fa fa-users" aria-hidden="true"></i>
+                    {{ study.attendees|length }} attending
+                </p>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+<div class="row justify-content-center">
+    <ul class="pagination">
+        {% if studies.has_prev %}
+        <li class="page-item">
+            <a class="page-link" href="{{ url_for('study_page.explore',
+                                       study_page_number=studies.prev_num, place=place, lng=lng, lat=lat) }}">
+                <span>&laquo;</span>
+            </a>
+        </li>
+        {% endif %}
+        <li class="page-item">
+            <p class="page-link">
+                Page {{ studies.page }} of {{ studies.pages }}
+            </p>
+        </li>
+        {% if studies.has_next %}
+        <li class="page-item">
+            <a class="page-link" href="{{ url_for('study_page.explore',
+                                       study_page_number=studies.next_num, place=place, lng=lng, lat=lat) }}">
+                <span>&raquo;</span>
+            </a>
+        </li>
+        {% endif %}
+    </ul>
+</div>
+{% elif place %}
+<p class="text-muted text-center">
+    We couldn't find any studies here :(
+</p>
+{% else %}
+{% endif %}
+
+{% endblock %}
+{% block javascript %}
+{% endblock %}

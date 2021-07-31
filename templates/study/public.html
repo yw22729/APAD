@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+{% block title %}{{ study.name }}{% endblock %}
+{% block content %}
+
+<h3>
+    {{ study.name }}
+</h3>
+<p class="text-muted">
+    Hosted by
+    <a href="{{ url_for('user_page.profile', id=study.host) }}">{{ host.name }}</a>
+    {% if session.email == host.email %}
+    <a href="{{ url_for('study_page.edit', id=study.id) }}">Edit</a>
+    {% endif %}
+</p>
+
+<div class="row">
+    <div class="col-md-8">
+        {% if study.study_photo %}
+        <img width="100%" src="{{ study.study_photo }}">
+        {% else %}
+        <img width="100%" src="{{ url_for('static', filename='img/study.png') }}">
+        {% endif %}
+    </div>
+    
+    <div class="col-md-4">
+        <h6>
+            Start Time
+        </h6>
+        <p>
+            <i class="fa fa-clock-o" aria-hidden="true"></i>
+            {{ study.start_datetime.strftime("%Y-%m-%d %I:%M%p") }}
+        </p>
+        <h6>
+            End Time
+        </h6>
+        <p>
+            <i class="fa fa-clock-o" aria-hidden="true"></i>
+            {{ study.end_datetime.strftime("%Y-%m-%d %I:%M%p") }}
+        </p>
+        <h6>
+            Place
+        </h6>
+        <p>
+            <i class="fa fa-map-marker" aria-hidden="true"></i>
+            <a href="http://maps.google.com?q={{ study.place }}" target="_blank">
+            {{ study.place }}
+            </a>
+        </p>
+        <h6>
+            Theme
+        </h6>
+        <p>
+            <i class="fa fa-map-marker" aria-hidden="true"></i>
+            <a href="http://maps.google.com?q={{ study.place }}" target="_blank">
+            {{ study.theme }}
+            </a>
+        </p>
+        
+        {% if study.cancel %}
+        This study has been canceled.
+        {% elif session['email'] == host.email %}
+        {% elif user in study.attendees %}
+        <a href="{{ url_for('study_page.leave', id=study.id) }}" class="btn btn-danger">Leave</a>
+        {% else %}
+        <a href="{{ url_for('study_page.join', id=study.id) }}" class="btn btn-success">Join</a>
+        {% endif %}
+    </div>
+</div>
+
+<hr>
+<h3>
+    Description
+</h3>
+<div class="row">
+    <div class="col-md-12">
+        <p>
+            {{ study.description}}
+        </p>
+    </div>
+</div>
+
+<hr>
+<h3>
+    Attendees
+</h3>
+<div class="row">
+    {% for user in study.attendees %}
+    <div class="col-md-3 text-center">
+        <a href="{{ url_for('user_page.profile', id=user.id) }}">
+        {% if user.profile_image %}
+            <img width="150px" height="150px" src="{{ user.profile_image }}"
+                 class="img-thumbnail rounded-circle">
+        {% else %}
+            <img width="150px" height="150px" src="{{ url_for('static', filename='img/user.png')}}"
+                 class="img-thumbnail rounded-circle">
+        {% endif %}
+            <p>
+                {{ user.name }}
+            </p>
+        </a>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

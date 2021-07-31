@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+{% block title %}{{ user.name }}'s Profile{% endblock %}
+{% block content %}
+<div class="row">
+    <div class="col-md-6 offset-md-3">
+        <div class="text-center">
+            {% if user.profile_image %}
+            <img width="150px" height="150px" src="{{ user.profile_image }}" class="img-thumbnail rounded-circle">
+            {% else %}
+            <img width="150px" height="150px" src="{{ url_for('static', filename='img/user.png') }}" class="img-thrumbnail rounded-circle">
+            {% endif %}
+            <h3>
+                {{ user.name }}
+            </h3>
+            
+            <p>
+                {% if user.bio %}
+                {{ user.bio }}
+                {% else %}
+                Hello everyone, I am a newbie here!
+                {% endif %}
+            </p>
+        </div>
+    </div>   
+</div>
+
+
+{% if studies and studies.pages > 0 %}
+<p class="text-muted text-center">
+    Study I'm going :)
+</p>
+
+
+<div class="row">
+    {% for study in studies.items %}
+    <div class="col-md-6 study-item">
+        <div class="card">
+            <a href="{{ url_for('study_page.public', id=study.id) }}" target="_blank">
+            {% if study.study_photo %}
+            <img class="card-img-top study-photo-item" src="{{ study.study_photo}}">
+            {% else %}
+            <img class="card-img-top study-photo-item" src="{{ url_for('static', filename='img/study.png')}}">
+            {% endif %}
+            </a>
+            <div class="card-block">
+                <h4 class="card-title">
+                    {{ study.name }}
+                </h4>
+                <p class="card-text">
+                    {{ study.description[:150] }}
+                </p>
+                <p class="card-text">
+                    <i class="fa fa-map-marker" aria-hidden="true"></i>
+                    <a href="http://maps.google.com?q={{ study.place }}" target="_blank">
+                    {{ study.place }}
+                    </a>
+                    <br>
+                    <i class="fa fa-clock-o" aria-hidden="true"></i>
+                    {{ study.start_datetime.strftime("%Y-%m-%d %I:%M%p") }} 
+                    <br>
+                    <i class="fa fa-users" aria-hidden="true"></i>
+                    {{ study.attendees|length }} attending
+                </p>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+<div class="row justify-content-center">
+    <ul class="pagination">
+        {% if studies.has_prev %}
+        <li class="page-item">
+            <a class="page-link" href="{{ url_for('user_page.profile',
+                                       study_page_number=studies.prev_num, id=user.id) }}">
+                <span>&laquo;</span>
+            </a>
+        </li>
+        {% endif %}
+        <li class="page-item">
+            <p class="page-link">
+                Page {{ studies.page }} of {{ studies.pages }}
+            </p>        
+        </li>
+        {% if studies.has_next %}
+        <li class="page-item">
+            <a class="page-link" href="{{ url_for('user_page.profile', 
+                                       study_page_number=studies.next_num, id=user.id) }}">
+                <span>&raquo;</span>
+            </a>
+        </li>
+        {% endif %}
+    </ul>
+</div>
+{% endif %}
+{% endblock %}
