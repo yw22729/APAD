@@ -21,7 +21,7 @@
         <img width="100%" src="{{ url_for('static', filename='img/study.png') }}">
         {% endif %}
     </div>
-    
+
     <div class="col-md-4">
         <h6>
             Start Time
@@ -42,7 +42,6 @@
         </h6>
         <p>
             <i class="fa fa-map-marker" aria-hidden="true"></i>
-            <a href="http://maps.google.com?q={{ study.place }}" target="_blank">
             {{ study.place }}
             </a>
         </p>
@@ -51,11 +50,18 @@
         </h6>
         <p>
             <i class="fa fa-map-marker" aria-hidden="true"></i>
-            <a href="http://maps.google.com?q={{ study.place }}" target="_blank">
             {{ study.theme }}
             </a>
         </p>
-        
+        <h6>
+            Tag
+        </h6>
+        <p>
+            <i class="fa fa-tag" aria-hidden="true"></i>
+            {{ tag.name }}
+            </a>
+        </p>
+
         {% if study.cancel %}
         This study has been canceled.
         {% elif session['email'] == host.email %}

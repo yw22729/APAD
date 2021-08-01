@@ -105,7 +105,8 @@ def public(id):
     if study:
         host = User.objects.filter(id=study.host).first()
         user = User.objects.filter(email=session.get('email')).first()
-        return render_template('study/public.html', study=study, host=host, user=user)
+        tag = Tag.objects.filter(id=study.tag).first()
+        return render_template('study/public.html', study=study, host=host, user=user, tag=tag)
     else:
         abort(404)
 
@@ -187,3 +188,17 @@ def create_tags():
             tag.save()
             return redirect(url_for('study_page.create'))
     return render_template('study/create_tags.html', form=form)
+
+@study_page.route('/search/<int:study_page_number>', methods=['GET'])
+@study_page.route('/search', methods=['GET'])
+def search(study_page_number=1):
+    tag_name = request.args.get('tag')
+    print(tag_name)
+    try:
+        tag = Tag.objects.filter(name=tag_name).first()
+        studies = Study.objects.filter(tag=tag.id,
+                                       cancel=False).order_by('-start_datetime').paginate(page=study_page_number, per_page=4)
+
+        return render_template('study/search.html', studies=studies, tag=tag_name)
+    except:
+        return render_template('study/search.html', tag=tag_name)
