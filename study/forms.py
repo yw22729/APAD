@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, validators, DateTimeField, FloatField
+from wtforms import StringField, validators, DateTimeField, FloatField,SelectField
 from wtforms.widgets import TextArea
 from flask_wtf.file import FileField, FileAllowed
 
@@ -14,7 +14,7 @@ class BasicStudyForm(FlaskForm):
                                 validators=[validators.DataRequired()],
                                 format='%Y-%m-%d %H:%M')
     description = StringField('Description', widget=TextArea(), validators=[validators.Length(min=50)])
-    tag = StringField('Tag', validators=[validators.DataRequired(), validators.Length(min=2, max=10)])
+    tag = SelectField('Tag', validators=[validators.DataRequired()])
 
 class EditStudyForm(BasicStudyForm):
     photo = FileField('Study photo',
@@ -24,3 +24,6 @@ class EditStudyForm(BasicStudyForm):
 class CancelStudyForm(FlaskForm):
     confirm = StringField('Are you sure you want to cancel this study? (say yes)',
                          validators=[validators.DataRequired()])
+
+class TagsForm(FlaskForm):
+    name = StringField('Tag', validators=[validators.DataRequired(), validators.Length(min=2, max=20)])

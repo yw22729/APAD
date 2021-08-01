@@ -39,9 +39,9 @@
             {{ render_field(form.place, class="form-control", id="place", readonly=true) }}
             {{ render_field(form.start_datetime, class="form-control", placeholder="e.g. YYYY-MM-DD HH:MM") }}
             {{ render_field(form.end_datetime, class="form-control", placeholder="e.g. YYYY-MM-DD HH:MM") }}
-
             {{ render_field(form.photo, class="form-control") }}
             {{ render_field(form.description, class="form-control", rows="8", minlength="50") }}
+            {{ render_field(form.tag, class="form-control") }}
 
             {% if study.cancel %}
             This study is canceled
@@ -57,5 +57,5 @@
 {% endblock %}
 
 {% block javascript %}
-{% include "googleapi.html" %}
+
 {% endblock %}

@@ -5,7 +5,7 @@ class Study(db.Document):
     name = db.StringField(required=True)
     place = db.StringField(required=True)
     theme = db.StringField(required=True)
-    location = db.PointField(required=True)
+    tag = db.ObjectIdField(required=True)
     start_datetime = db.DateTimeField(required=True)
     end_datetime = db.DateTimeField(required=True)
     study_photo = db.StringField()
