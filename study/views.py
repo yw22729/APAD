@@ -80,7 +80,6 @@ def cancel(id):
     except bson.errors.InvalidId:
         abort(404)
     user = User.objects.filter(email=session.get('email')).first()
-    tag = Tag.objects.filter(id=bson.ObjectId(tag_id)).first()
 
     if study and study.host == user.id and study.cancel == False:
         error = None
@@ -89,10 +88,10 @@ def cancel(id):
             if form.confirm.data == 'yes':
                 study.cancel = True
                 study.save()
-                return redirect(url_for('study_page.edit', id=study.id, tag_id=tage.id))
+                return redirect(url_for('study_page.edit', id=study.id))
             else:
                 error = 'Say yes if you want to cancel'
-        return render_template('study/cancel.html', form=form, error=error, study=study, tag=tag)
+        return render_template('study/cancel.html', form=form, error=error, study=study)
     else:
         abort(404)
 
