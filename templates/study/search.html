@@ -53,7 +53,6 @@
                 <p class="card-text">
                     <i class="fa fa-map-marker" aria-hidden="true"></i>
                     {{ study.place }}
-                    </a>
                     <br>
                     <i class="fa fa-clock-o" aria-hidden="true"></i>
                     {{ study.start_datetime.strftime("%Y-%m-%d %I:%M%p") }}
@@ -65,7 +64,10 @@
                     Theme: {{ study.theme }}
                     <br>
                     <i class="fa fa-tag" aria-hidden="true"></i>
-                    Tag: {{ tag }}
+                    Tag:
+                    {% for tag in study.tag %}
+                      {{ tag }}
+                    {% endfor %}
                 </p>
             </div>
         </div>

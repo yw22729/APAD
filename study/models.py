@@ -5,7 +5,7 @@ class Study(db.Document):
     name = db.StringField(required=True)
     place = db.StringField(required=True)
     theme = db.StringField(required=True)
-    tag = db.ObjectIdField(required=True)
+    tag = db.ListField(required=True)
     start_datetime = db.DateTimeField(required=True)
     end_datetime = db.DateTimeField(required=True)
     study_photo = db.StringField()
@@ -21,5 +21,5 @@ class Theme(db.Document):
     description = db.StringField(min_length=50, required=True)
     cancel = db.BooleanField(default=False)
 
-class Tag(db.Document):
-    name = db.StringField(required=True)
+# class Tag(db.Document):
+#     name = db.StringField(required=True)

@@ -7,45 +7,46 @@
 </h1>
 
 <div class="row">
-    {% for i in range(studies.items|length) %}
+    {% for study in studies.items %}
     <div class="col-md-6 study-item">
         <div class="card">
-            {% if studies.items[i].study_photo %}
+            {% if study.study_photo %}
             <img class="card-img-top study-photo-item" src="{{ study.study_photo}}">
             {% else %}
             <img class="card-img-top study-photo-item" src="{{ url_for('static', filename='img/study.png')}}">
             {% endif %}
             <div class="card-block">
                 <h4 class="card-title">
-                    {{ studies.items[i].name }}
+                    {{ study.name }}
                 </h4>
                 <p class="card-text">
-                    {{ studies.items[i].description[:150] }}
+                    {{ study.description[:150] }}
                 </p>
                 <p class="card-text">
                     <i class="fa fa-map-marker" aria-hidden="true"></i>
-                    <a href="http://maps.google.com?q={{ studies.items[i].place }}" target="_blank">
-                    {{ studies.items[i].place }}
-                    </a>
+                    {{ study.place }}
                     <br>
                     <i class="fa fa-clock-o" aria-hidden="true"></i>
-                    {{ studies.items[i].start_datetime.strftime("%Y-%m-%d %I:%M%p") }}
+                    {{ study.start_datetime.strftime("%Y-%m-%d %I:%M%p") }}
                     <br>
                     <i class="fa fa-users" aria-hidden="true"></i>
-                    {{ studies.items[i].attendees|length }} attending
+                    {{ study.attendees|length }} attending
                     <br>
                     <i class="fa fa-users" aria-hidden="true"></i>
-                    Theme: {{ studies.items[i].theme }}
+                    Theme: {{ study.theme }}
                     <br>
                     <i class="fa fa-tag" aria-hidden="true"></i>
-                    Tag: {{ tags[i] }}
+                    Tag:
+                    {% for tag in study.tag %}
+                      {{ tag }}
+                    {% endfor %}
                 </p>
-                {% if studies.items[i].cancel %}
+                {% if study.cancel %}
                 <button class="btn btn-danger">
                     Canceled
                 </button>
                 {% else %}
-                <a href="{{ url_for('study_page.edit', id=studies.items[i].id) }}" class="btn btn-success">
+                <a href="{{ url_for('study_page.edit', id=study.id) }}" class="btn btn-success">
                     Edit
                 </a>
                 {% endif %}

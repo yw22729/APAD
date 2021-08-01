@@ -14,7 +14,7 @@ class BasicStudyForm(FlaskForm):
                                 validators=[validators.DataRequired()],
                                 format='%Y-%m-%d %H:%M')
     description = StringField('Description', widget=TextArea(), validators=[validators.Length(min=50)])
-    tag = SelectField('Tag', validators=[validators.DataRequired()])
+    tag = StringField('Tag', validators=[validators.DataRequired()])
 
 class EditStudyForm(BasicStudyForm):
     photo = FileField('Study photo',
@@ -25,5 +25,5 @@ class CancelStudyForm(FlaskForm):
     confirm = StringField('Are you sure you want to cancel this study? (say yes)',
                          validators=[validators.DataRequired()])
 
-class TagsForm(FlaskForm):
-    name = StringField('Tag', validators=[validators.DataRequired(), validators.Length(min=2, max=20)])
+# class TagsForm(FlaskForm):
+#     name = StringField('Tag', validators=[validators.DataRequired(), validators.Length(min=2, max=20)])
