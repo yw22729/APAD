@@ -43,7 +43,6 @@
         <p>
             <i class="fa fa-map-marker" aria-hidden="true"></i>
             {{ study.place }}
-            </a>
         </p>
         <h6>
             Theme
@@ -51,7 +50,6 @@
         <p>
             <i class="fa fa-map-marker" aria-hidden="true"></i>
             {{ study.theme }}
-            </a>
         </p>
         <h6>
             Tag
@@ -59,9 +57,12 @@
         <p>
             <i class="fa fa-tag" aria-hidden="true"></i>
             {% for tag in study.tag %}
-              {{ tag }}
+              {% if study.tag.index(tag) != (study.tag|length - 1)%}
+                {{ tag }},
+              {% else %}
+                {{ tag }}
+              {% endif %}
             {% endfor %}
-            </a>
         </p>
 
         {% if study.cancel %}

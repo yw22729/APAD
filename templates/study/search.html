@@ -66,7 +66,11 @@
                     <i class="fa fa-tag" aria-hidden="true"></i>
                     Tag:
                     {% for tag in study.tag %}
-                      {{ tag }}
+                      {% if study.tag.index(tag) != (study.tag|length - 1)%}
+                        {{ tag }},
+                      {% else %}
+                        {{ tag }}
+                      {% endif %}
                     {% endfor %}
                 </p>
             </div>
