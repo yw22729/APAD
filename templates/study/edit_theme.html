@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% block title %}Edit Theme{% endblock %}
+{% block content %}
+
+<div class="row">
+    <div class="col-md-6 offset-md-3">
+
+        {% if theme.theme_photo %}
+        <img width="100%" src="{{ theme.theme_photo }}">
+        {% else %}
+        <img width="100%" src="{{ url_for('static', filename='img/study.png') }}">
+        {% endif %}
+
+        <div class="text-center">
+            <h3>
+                Edit Theme
+            </h3>
+            <h6>
+                <a href="{{ url_for('study_page.public_theme', id=theme.id) }}">Preview</a>
+            </h6>
+        </div>
+        {% if error %}
+        <div class="alert alert-danger">
+            {{ error }}
+        </div>
+        {% endif %}
+
+        {% if message %}
+        <div class="alert alert-success">
+            {{ message }}
+        </div>
+        {% endif %}
+
+        {% from "_formhelpers.html" import render_field %}
+        <form method="POST" action="{{ url_for('study_page.edit_theme', id=theme.id) }}" enctype="multipart/form-data">
+            {{ form.csrf_token }}
+            {{ render_field(form.name, class="form-control") }}
+            {{ render_field(form.photo, class="form-control") }}
+            {{ render_field(form.description, class="form-control", rows="8", minlength="50") }}
+
+            {% if theme.cancel %}
+            This theme is canceled
+            {% else %}
+            <button type="submit" class="btn btn-success">
+                Save
+            </button>
+            <a class="btn btn-secondary" href="{{ url_for('study_page.cancel', id=theme.id) }}">Cancel study</a>
+            {% endif %}
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block javascript %}
+{% include "googleapi.html" %}
+{% endblock %}

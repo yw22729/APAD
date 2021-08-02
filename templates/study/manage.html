@@ -24,7 +24,9 @@
                 </p>
                 <p class="card-text">
                     <i class="fa fa-map-marker" aria-hidden="true"></i>
+                    <a href="http://maps.google.com?q={{ study.place }}" target="_blank">
                     {{ study.place }}
+                    </a>
                     <br>
                     <i class="fa fa-clock-o" aria-hidden="true"></i>
                     {{ study.start_datetime.strftime("%Y-%m-%d %I:%M%p") }}

@@ -41,9 +41,11 @@
             Place
         </h6>
         <p>
-            <i class="fa fa-map-marker" aria-hidden="true"></i>
-            {{ study.place }}
-        </p>
+                <i class="fa fa-map-marker" aria-hidden="true"></i>
+                <a href="http://maps.google.com?q={{ study.place }}" target="_blank">
+                {{ study.place }}
+                </a>
+            </p>
         <h6>
             Theme
         </h6>

@@ -36,7 +36,10 @@
             {{ form.csrf_token }}
             {{ render_field(form.name, class="form-control") }}
             {{ render_field(form.theme, class="form-control") }}
+            {{ render_field(form.gplace, class="form-control", id="autocomplete", placeholder="Enter your address") }}
             {{ render_field(form.place, class="form-control", id="place", readonly=true) }}
+            {{ render_field(form.lng, class="form-control", id="lng", readonly=true) }}
+            {{ render_field(form.lat, class="form-control", id="lat", readonly=true) }}
             {{ render_field(form.start_datetime, class="form-control", placeholder="e.g. YYYY-MM-DD HH:MM") }}
             {{ render_field(form.end_datetime, class="form-control", placeholder="e.g. YYYY-MM-DD HH:MM") }}
             {{ render_field(form.photo, class="form-control") }}
@@ -49,7 +52,7 @@
             <button type="submit" class="btn btn-success">
                 Save
             </button>
-            <a href="{{ url_for('study_page.cancel', id=study.id) }}">Cancel study</a>
+            <a class="btn btn-secondary" href="{{ url_for('study_page.cancel', id=study.id) }}">Cancel study</a>
             {% endif %}
         </form>
     </div>
@@ -57,5 +60,5 @@
 {% endblock %}
 
 {% block javascript %}
-
+{% include "googleapi.html" %}
 {% endblock %}

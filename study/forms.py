@@ -6,7 +6,11 @@ from flask_wtf.file import FileField, FileAllowed
 class BasicStudyForm(FlaskForm):
     name = StringField('Study Name', validators=[validators.DataRequired(), validators.Length(min=2, max=80)])
     theme = SelectField('Theme', validators=[validators.DataRequired()])
+    # place = StringField('Place', validators=[validators.DataRequired()], widget=TextArea())
+    gplace = StringField('Google Place API')
     place = StringField('Place', validators=[validators.DataRequired()], widget=TextArea())
+    lng = FloatField('Longitude', validators=[validators.Optional()])
+    lat = FloatField('Latitude', validators=[validators.Optional()])
     start_datetime = DateTimeField('Start Time',
                                   validators=[validators.DataRequired()],
                                   format='%Y-%m-%d %H:%M')
@@ -28,3 +32,8 @@ class CancelStudyForm(FlaskForm):
 class ThemesForm(FlaskForm):
     name = StringField('Name', validators=[validators.DataRequired(), validators.Length(min=2, max=20)])
     description = StringField('Description', widget=TextArea(), validators=[validators.Length(min=10)])
+
+class EditThemeForm(ThemesForm):
+    photo = FileField('Theme photo',
+                     validators=[FileAllowed(['jpg', 'jpeg', 'png', 'gif'],
+                                             'Only allow .jpg .png and .gif files')])

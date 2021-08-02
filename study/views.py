@@ -2,7 +2,7 @@ from flask import Blueprint, render_template, request, session, redirect, url_fo
 import bson
 
 
-from study.forms import BasicStudyForm, EditStudyForm, CancelStudyForm, ThemesForm
+from study.forms import BasicStudyForm, EditStudyForm, CancelStudyForm, ThemesForm, EditThemeForm
 from user.decorators import login_required
 from study.models import Study, Theme
 from user.models import User
@@ -26,6 +26,7 @@ def create():
             study = Study(
                 name=form.name.data,
                 place=form.place.data,
+                location=[form.lng.data, form.lat.data],
                 theme = form.theme.data,
                 start_datetime=form.start_datetime.data,
                 end_datetime=form.end_datetime.data,
@@ -53,12 +54,16 @@ def edit(id):
         error = None
         message = None
         form = EditStudyForm(obj=study)
+        themes = Theme.objects
+        form.theme.choices = [theme.name for theme in themes]
 
         if request.method == 'POST' and form.validate():
             if form.end_datetime.data < form.start_datetime.data:
                 error = 'A study must end after it starts!'
             if not error:
                 form.populate_obj(study)
+                if form.lng.data and form.lat.data:
+                    study.location = [form.lng.data, form.lat.data]
                 image_url = upload_image_file(request.files.get('photo'), 'study_photo', str(study.id))
                 if image_url:
                     study.study_photo = image_url
@@ -70,6 +75,35 @@ def edit(id):
                 message = 'Study updated'
         return render_template('study/edit.html', form=form, error=error,
                               message=message, study=study)
+    else:
+        abort(404)
+
+@study_page.route('/<id>/edit_theme', methods=['GET', 'POST'])
+@login_required
+def edit_theme(id):
+    try:
+        theme = Theme.objects.filter(id=bson.ObjectId(id)).first()
+    except bson.errors.InvalidId:
+        abort(404)
+
+    user = User.objects.filter(email=session.get('email')).first()
+
+    if theme:
+        error = None
+        message = None
+        form = EditThemeForm(obj=theme)
+
+        if request.method == 'POST' and form.validate():
+            if not error:
+                form.populate_obj(theme)
+                image_url = upload_image_file(request.files.get('photo'), 'theme_photo', str(theme.id))
+                if image_url:
+                    theme.theme_photo = image_url
+
+                theme.save()
+                message = 'Theme updated'
+        return render_template('study/edit_theme.html', form=form, error=error,
+                              message=message, theme=theme)
     else:
         abort(404)
 
@@ -252,7 +286,8 @@ def create_themes():
                 subscribers=[user.id]
             )
             theme.save()
-            return redirect(url_for('study_page.manage_themes'))
+            message = 'Theme created'
+            return redirect(url_for('study_page.manage_theme',message=message))
     return render_template('study/create_themes.html', form=form, error=error)
 
 @study_page.route('/search/<int:study_page_number>', methods=['GET'])
