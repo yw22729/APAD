@@ -5,7 +5,7 @@ from flask_wtf.file import FileField, FileAllowed
 
 class BasicStudyForm(FlaskForm):
     name = StringField('Study Name', validators=[validators.DataRequired(), validators.Length(min=2, max=80)])
-    theme = StringField('Theme', validators=[validators.DataRequired(), validators.Length(min=2, max=80)])
+    theme = SelectField('Theme', validators=[validators.DataRequired()])
     place = StringField('Place', validators=[validators.DataRequired()], widget=TextArea())
     start_datetime = DateTimeField('Start Time',
                                   validators=[validators.DataRequired()],
@@ -25,5 +25,6 @@ class CancelStudyForm(FlaskForm):
     confirm = StringField('Are you sure you want to cancel this study? (say yes)',
                          validators=[validators.DataRequired()])
 
-# class TagsForm(FlaskForm):
-#     name = StringField('Tag', validators=[validators.DataRequired(), validators.Length(min=2, max=20)])
+class ThemesForm(FlaskForm):
+    name = StringField('Name', validators=[validators.DataRequired(), validators.Length(min=2, max=20)])
+    description = StringField('Description', widget=TextArea(), validators=[validators.Length(min=10)])

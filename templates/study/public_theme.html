@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% block title %}{{ theme.name }}{% endblock %}
+{% block content %}
+
+<h3>
+    {{ theme.name }}
+</h3>
+
+
+<div class="row">
+
+
+    <div class="col-md-4">
+
+        {% if user in theme.subscribers %}
+            <a href="{{ url_for('study_page.leave_theme', id=theme.id) }}" class="btn btn-danger">Unsubscribe</a>
+        {% else %}
+            <a href="{{ url_for('study_page.join_theme', id=theme.id) }}" class="btn btn-success">Subscribe</a>
+        {% endif %}
+    </div>
+</div>
+
+<hr>
+<h3>
+    Description
+</h3>
+<div class="row">
+    <div class="col-md-12">
+        <p>
+            {{ theme.description}}
+        </p>
+    </div>
+</div>
+
+<hr>
+<h3>
+    Subscribers
+</h3>
+<div class="row">
+    {% for user in theme.subscribers %}
+    <div class="col-md-3 text-center">
+        <a href="{{ url_for('user_page.profile', id=user.id) }}">
+        {% if user.profile_image %}
+            <img width="150px" height="150px" src="{{ user.profile_image }}"
+                 class="img-thumbnail rounded-circle">
+        {% else %}
+            <img width="150px" height="150px" src="{{ url_for('static', filename='img/user.png')}}"
+                 class="img-thumbnail rounded-circle">
+        {% endif %}
+            <p>
+                {{ user.name }}
+            </p>
+        </a>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

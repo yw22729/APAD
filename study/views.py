@@ -2,7 +2,7 @@ from flask import Blueprint, render_template, request, session, redirect, url_fo
 import bson
 
 
-from study.forms import BasicStudyForm, EditStudyForm, CancelStudyForm
+from study.forms import BasicStudyForm, EditStudyForm, CancelStudyForm, ThemesForm
 from user.decorators import login_required
 from study.models import Study, Theme
 from user.models import User
@@ -15,8 +15,8 @@ study_page = Blueprint('study_page', __name__)
 def create():
     form = BasicStudyForm()
     error = None
-    # tags = Tag.objects
-    # form.tag.choices = [tag.name for tag in tags]
+    themes = Theme.objects
+    form.theme.choices = [theme.name for theme in themes]
     if request.method == 'POST' and form.validate():
         if form.end_datetime.data < form.start_datetime.data:
             error = "A study must end after it starts!"
@@ -111,6 +111,19 @@ def public(id):
     else:
         abort(404)
 
+@study_page.route('/themes/<id>', methods=['GET'])
+def public_theme(id):
+    try:
+        theme = Theme.objects.filter(id=bson.ObjectId(id)).first()
+    except bson.errors.InvalidId:
+        abort(404)
+
+    if theme:
+        user = User.objects.filter(email=session.get('email')).first()
+        return render_template('study/public_theme.html', theme=theme, user=user)
+    else:
+        abort(404)
+
 @study_page.route('/<id>/join', methods=['GET'])
 @login_required
 def join(id):
@@ -128,6 +141,7 @@ def join(id):
     else:
         abort(404)
 
+
 @study_page.route('/<id>/leave', methods=['GET'])
 @login_required
 def leave(id):
@@ -142,6 +156,41 @@ def leave(id):
             study.attendees.remove(user)
             study.save()
         return redirect(url_for('study_page.public', id=id))
+    else:
+        abort(404)
+
+@study_page.route('/<id>/join_theme', methods=['GET'])
+@login_required
+def join_theme(id):
+    user = User.objects.filter(email=session.get('email')).first()
+    try:
+        theme = Theme.objects.filter(id=bson.ObjectId(id)).first()
+    except bson.errors.InvalidId:
+        abort(404)
+
+    if user and theme:
+        if user not in theme.subscribers:
+            theme.subscribers.append(user)
+            theme.save()
+        return redirect(url_for('study_page.manage_theme', id=id))
+    else:
+        abort(404)
+
+
+@study_page.route('/<id>/leave_theme', methods=['GET'])
+@login_required
+def leave_theme(id):
+    user = User.objects.filter(email=session.get('email')).first()
+    try:
+        theme = Theme.objects.filter(id=bson.ObjectId(id)).first()
+    except bson.errors.InvalidId:
+        abort(404)
+
+    if user and theme:
+        if user in theme.subscribers:
+            theme.subscribers.remove(user)
+            theme.save()
+        return redirect(url_for('study_page.manage_theme', id=id))
     else:
         abort(404)
 
@@ -161,6 +210,18 @@ def manage(study_page_number=1):
     else:
         abort(404)
 
+@study_page.route('/manage/<int:study_page_number>', methods=['GET'])
+@study_page.route('/manage_themes', methods=['GET'])
+@login_required
+def manage_theme(study_page_number=1):
+    user = User.objects.filter(email=session.get('email')).first()
+    if user:
+        themes = Theme.objects.filter().paginate(page=study_page_number, per_page=4)
+
+        return render_template('study/manage_themes.html', themes=themes, user=user)
+    else:
+        abort(404)
+
 @study_page.route('/explore/<int:study_page_number>', methods=['GET'])
 @study_page.route('/explore', methods=['GET'])
 def explore(study_page_number=1):
@@ -174,21 +235,24 @@ def explore(study_page_number=1):
     except:
         return render_template('study/explore.html', place=place)
 
-# @study_page.route('/create_themes', methods=['GET', 'POST'])
-# @login_required
-# def create_tags():
-#     form = TagsForm()
-#     error = None
-#     if request.method == 'POST' and form.validate():
-#         if Tag.objects.filter(name=form.name.data).first():
-#             error = "The tag already exists!"
-#         if not error:
-#             tag = Tag(
-#                 name=form.name.data
-#             )
-#             tag.save()
-#             return redirect(url_for('study_page.create'))
-#     return render_template('study/create_tags.html', form=form)
+@study_page.route('/create_themes', methods=['GET', 'POST'])
+@login_required
+def create_themes():
+    form = ThemesForm()
+    error = None
+    if request.method == 'POST' and form.validate():
+        if Theme.objects.filter(name=form.name.data).first():
+            error = "The tag already exists!"
+        if not error:
+            user = User.objects.filter(email=session.get('email')).first()
+            theme = Theme(
+                name=form.name.data,
+                description=form.description.data,
+                subscribers=[user.id]
+            )
+            theme.save()
+            return redirect(url_for('study_page.manage_themes'))
+    return render_template('study/create_themes.html', form=form, error=error)
 
 @study_page.route('/search/<int:study_page_number>', methods=['GET'])
 @study_page.route('/search', methods=['GET'])

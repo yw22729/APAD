@@ -16,8 +16,7 @@ class Study(db.Document):
 
 class Theme(db.Document):
     name = db.StringField(required=True)
-    place = db.StringField(required=True)
-    study_photo = db.StringField()
+    subscribers = db.ListField(db.ReferenceField(User))
     description = db.StringField(min_length=50, required=True)
     cancel = db.BooleanField(default=False)
 
