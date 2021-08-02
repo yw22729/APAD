@@ -201,12 +201,13 @@ def manage(study_page_number=1):
     user = User.objects.filter(email=session.get('email')).first()
     if user:
         studies = Study.objects.filter(host=user.id).order_by('-start_datetime').paginate(page=study_page_number, per_page=4)
+        themes = Theme.objects.filter(subscribers=user.id).paginate(page=study_page_number, per_page=4)
         # tags = []
         # for study in studies.items:
         #     tag_id = study.tag
         #     tag = Tag.objects.filter(id=bson.ObjectId(tag_id)).first()
         #     tags.append(tag.name)
-        return render_template('study/manage.html', studies=studies)
+        return render_template('study/manage.html', studies=studies, themes = themes, user = user)
     else:
         abort(404)
 
