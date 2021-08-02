@@ -1,8 +1,12 @@
 from flask import Blueprint, render_template, request, session, redirect, url_for, abort
 import bson
+<<<<<<< HEAD
 
 
 from study.forms import BasicStudyForm, EditStudyForm, CancelStudyForm, ThemesForm, EditThemeForm
+=======
+from study.forms import BasicStudyForm, EditStudyForm, CancelStudyForm, ThemesForm
+>>>>>>> 32629a70111dbe75e60497137bb90e316b3226e3
 from user.decorators import login_required
 from study.models import Study, Theme
 from user.models import User
@@ -22,7 +26,6 @@ def create():
             error = "A study must end after it starts!"
         if not error:
             user = User.objects.filter(email=session.get('email')).first()
-            # tag = Tag.objects.filter(name=form.tag.data).first()
             study = Study(
                 name=form.name.data,
                 place=form.place.data,
@@ -70,7 +73,6 @@ def edit(id):
                 if study.tag:
                     tags = form.tag.data.split(", ")
                     study.tag = tags
-
                 study.save()
                 message = 'Study updated'
         return render_template('study/edit.html', form=form, error=error,
