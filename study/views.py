@@ -230,8 +230,8 @@ def leave_theme(id):
 def manage(study_page_number=1):
     user = User.objects.filter(email=session.get('email')).first()
     if user:
-        studies = Study.objects.filter(host=user.id).order_by('-start_datetime').paginate(page=study_page_number, per_page=4)
-        themes = Theme.objects.filter(subscribers=user.id).paginate(page=study_page_number, per_page=4)
+        studies = Study.objects.filter(host=user.id).order_by('-start_datetime').paginate(page=study_page_number, per_page=30)
+        themes = Theme.objects.filter(subscribers=user.id).paginate(page=study_page_number, per_page=30)
         # tags = []
         # for study in studies.items:
         #     tag_id = study.tag
@@ -247,8 +247,7 @@ def manage(study_page_number=1):
 def manage_theme(study_page_number=1):
     user = User.objects.filter(email=session.get('email')).first()
     if user:
-        themes = Theme.objects.filter().paginate(page=study_page_number, per_page=4)
-
+        themes = Theme.objects.filter().paginate(page=study_page_number, per_page=30)
         return render_template('study/manage_themes.html', themes=themes, user=user)
     else:
         abort(404)
