@@ -96,11 +96,11 @@
         {% for theme in themes.items %}
         <div class="col-md-6 study-item">
             <div class="card">
-                <!-- {% if theme.study_photo %}
-                <img class="card-img-top study-photo-item" src="{{ study.study_photo}}">
+                {% if theme.study_photo %}
+                <img class="card-img-top study-photo-item" src="{{ theme.theme_photo}}">
                 {% else %}
                 <img class="card-img-top study-photo-item" src="{{ url_for('static', filename='img/study.png')}}">
-                {% endif %} -->
+                {% endif %}
                 <div class="card-block">
                     <a href="{{ url_for('study_page.public_theme', id=theme.id) }}" target="_blank">
                         <h4 class="card-title">
