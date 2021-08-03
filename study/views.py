@@ -52,7 +52,8 @@ def edit(id):
         error = None
         message = None
         form = EditStudyForm(obj=study)
-
+        themes = Theme.objects
+        form.theme.choices = [theme.name for theme in themes]
         if request.method == 'POST' and form.validate():
             if form.end_datetime.data < form.start_datetime.data:
                 error = 'A study must end after it starts!'
@@ -66,7 +67,6 @@ def edit(id):
                 if study.tag:
                     tags = form.tag.data.split(", ")
                     study.tag = tags
-
                 study.save()
                 message = 'Study updated'
         return render_template('study/edit.html', form=form, error=error,
