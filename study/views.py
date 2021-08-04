@@ -20,7 +20,6 @@ def create():
             error = "A study must end after it starts!"
         if not error:
             user = User.objects.filter(email=session.get('email')).first()
-            # tag = Tag.objects.filter(name=form.tag.data).first()
             study = Study(
                 name=form.name.data,
                 place=form.place.data,
@@ -45,9 +44,7 @@ def edit(id):
         study.tag = ", ".join(study.tag)
     except bson.errors.InvalidId:
         abort(404)
-
     user = User.objects.filter(email=session.get('email')).first()
-
     if study and study.host == user.id:
         error = None
         message = None
@@ -81,21 +78,17 @@ def edit_theme(id):
         theme = Theme.objects.filter(id=bson.ObjectId(id)).first()
     except bson.errors.InvalidId:
         abort(404)
-
     user = User.objects.filter(email=session.get('email')).first()
-
     if theme:
         error = None
         message = None
         form = EditThemeForm(obj=theme)
-
         if request.method == 'POST' and form.validate():
             if not error:
                 form.populate_obj(theme)
                 image_url = upload_image_file(request.files.get('photo'), 'theme_photo', str(theme.id))
                 if image_url:
                     theme.theme_photo = image_url
-
                 theme.save()
                 message = 'Theme updated'
         return render_template('study/edit_theme.html', form=form, error=error,
@@ -111,7 +104,6 @@ def cancel(id):
     except bson.errors.InvalidId:
         abort(404)
     user = User.objects.filter(email=session.get('email')).first()
-
     if study and study.host == user.id and study.cancel == False:
         error = None
         form = CancelStudyForm()
@@ -132,7 +124,6 @@ def public(id):
         study = Study.objects.filter(id=bson.ObjectId(id)).first()
     except bson.errors.InvalidId:
         abort(404)
-
     if study:
         host = User.objects.filter(id=study.host).first()
         user = User.objects.filter(email=session.get('email')).first()
@@ -161,7 +152,6 @@ def join(id):
         study = Study.objects.filter(id=bson.ObjectId(id)).first()
     except bson.errors.InvalidId:
         abort(404)
-
     if user and study:
         if user not in study.attendees:
             study.attendees.append(user)
@@ -169,7 +159,6 @@ def join(id):
         return redirect(url_for('study_page.public', id=id))
     else:
         abort(404)
-
 
 @study_page.route('/<id>/leave', methods=['GET'])
 @login_required
@@ -179,7 +168,6 @@ def leave(id):
         study = Study.objects.filter(id=bson.ObjectId(id)).first()
     except bson.errors.InvalidId:
         abort(404)
-
     if user and study:
         if user in study.attendees:
             study.attendees.remove(user)
@@ -196,7 +184,6 @@ def join_theme(id):
         theme = Theme.objects.filter(id=bson.ObjectId(id)).first()
     except bson.errors.InvalidId:
         abort(404)
-
     if user and theme:
         if user not in theme.subscribers:
             theme.subscribers.append(user)
@@ -204,7 +191,6 @@ def join_theme(id):
         return redirect(url_for('study_page.manage_theme', id=id))
     else:
         abort(404)
-
 
 @study_page.route('/<id>/leave_theme', methods=['GET'])
 @login_required
@@ -214,7 +200,6 @@ def leave_theme(id):
         theme = Theme.objects.filter(id=bson.ObjectId(id)).first()
     except bson.errors.InvalidId:
         abort(404)
-
     if user and theme:
         if user in theme.subscribers:
             theme.subscribers.remove(user)
