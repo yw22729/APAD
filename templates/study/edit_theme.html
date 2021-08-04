@@ -34,7 +34,7 @@
         {% from "_formhelpers.html" import render_field %}
         <form method="POST" action="{{ url_for('study_page.edit_theme', id=theme.id) }}" enctype="multipart/form-data">
             {{ form.csrf_token }}
-            {{ render_field(form.name, class="form-control") }}
+            {{ render_field(form.name, class="form-control", readonly=true) }}
             {{ render_field(form.photo, class="form-control") }}
             {{ render_field(form.description, class="form-control", rows="8", minlength="50") }}
 
