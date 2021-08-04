@@ -5,13 +5,9 @@
 <h3>
     {{ theme.name }}
 </h3>
-
-
+<br>
 <div class="row">
-
-
     <div class="col-md-4">
-
         {% if user in theme.subscribers %}
             <a href="{{ url_for('study_page.leave_theme', id=theme.id) }}" class="btn btn-danger">Unsubscribe</a>
         {% else %}
@@ -19,7 +15,7 @@
         {% endif %}
     </div>
 </div>
-
+<br>
 <hr>
 <h3>
     Description
@@ -31,7 +27,7 @@
         </p>
     </div>
 </div>
-
+<br>
 <hr>
 <h3>
     Subscribers
@@ -51,6 +47,60 @@
                 {{ user.name }}
             </p>
         </a>
+    </div>
+    {% endfor %}
+</div>
+<br>
+<hr>
+<h3>
+    Associated Studies
+</h3>
+<br>
+<div class="row">
+    {% for study in studies %}
+    <div class="col-md-6 study-item">
+        <div class="card">
+          <a href="{{ url_for('study_page.public', id=study.id) }}" target="_blank">
+            {% if study.study_photo %}
+            <img class="card-img-top study-photo-item" src="{{ study.study_photo}}">
+            {% else %}
+            <img class="card-img-top study-photo-item" src="{{ url_for('static', filename='img/study.png')}}">
+            {% endif %}
+            </a>
+            <div class="card-block">
+                <h4 class="card-title">
+                    {{ study.name }}
+                </h4>
+                <p class="card-text">
+                    {{ study.description[:150] }}
+                </p>
+                <p class="card-text">
+                    <i class="fa fa-map-marker" aria-hidden="true"></i>
+                    <a href="http://maps.google.com?q={{ study.place }}" target="_blank">
+                    {{ study.place }}
+                    </a>
+                    <br>
+                    <i class="fa fa-clock-o" aria-hidden="true"></i>
+                    {{ study.start_datetime.strftime("%Y-%m-%d %I:%M%p") }}
+                    <br>
+                    <i class="fa fa-users" aria-hidden="true"></i>
+                    {{ study.attendees|length }} attending
+                    <br>
+                    <i class="fa fa-users" aria-hidden="true"></i>
+                    Theme: {{ study.theme }}
+                    <br>
+                    <i class="fa fa-tag" aria-hidden="true"></i>
+                    Tag:
+                    {% for tag in study.tag %}
+                      {% if study.tag.index(tag) != (study.tag|length - 1)%}
+                        {{ tag }},
+                      {% else %}
+                        {{ tag }}
+                      {% endif %}
+                    {% endfor %}
+                </p>
+            </div>
+        </div>
     </div>
     {% endfor %}
 </div>

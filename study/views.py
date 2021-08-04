@@ -136,7 +136,6 @@ def public(id):
     if study:
         host = User.objects.filter(id=study.host).first()
         user = User.objects.filter(email=session.get('email')).first()
-        # tag = Tag.objects.filter(id=study.tag).first()
         return render_template('study/public.html', study=study, host=host, user=user)
     else:
         abort(404)
@@ -147,10 +146,10 @@ def public_theme(id):
         theme = Theme.objects.filter(id=bson.ObjectId(id)).first()
     except bson.errors.InvalidId:
         abort(404)
-
     if theme:
         user = User.objects.filter(email=session.get('email')).first()
-        return render_template('study/public_theme.html', theme=theme, user=user)
+        studies = Study.objects.filter(theme=theme.name)
+        return render_template('study/public_theme.html', theme=theme, user=user, studies=studies)
     else:
         abort(404)
 
@@ -224,46 +223,39 @@ def leave_theme(id):
     else:
         abort(404)
 
-@study_page.route('/manage/<int:study_page_number>', methods=['GET'])
 @study_page.route('/manage', methods=['GET'])
 @login_required
-def manage(study_page_number=1):
+def manage():
     user = User.objects.filter(email=session.get('email')).first()
     if user:
-        studies = Study.objects.filter(host=user.id).order_by('-start_datetime').paginate(page=study_page_number, per_page=30)
-        themes = Theme.objects.filter(subscribers=user.id).paginate(page=study_page_number, per_page=30)
-        # tags = []
-        # for study in studies.items:
-        #     tag_id = study.tag
-        #     tag = Tag.objects.filter(id=bson.ObjectId(tag_id)).first()
-        #     tags.append(tag.name)
+        studies = Study.objects.filter(host=user.id).order_by('-start_datetime')
+        themes = Theme.objects.filter(subscribers=user.id)
         return render_template('study/manage.html', studies=studies, themes = themes, user = user)
     else:
         abort(404)
 
-@study_page.route('/manage/<int:study_page_number>', methods=['GET'])
 @study_page.route('/manage_themes', methods=['GET'])
 @login_required
-def manage_theme(study_page_number=1):
+def manage_theme():
     user = User.objects.filter(email=session.get('email')).first()
     if user:
-        themes = Theme.objects.filter().paginate(page=study_page_number, per_page=30)
+        themes = Theme.objects.order_by("name")
         return render_template('study/manage_themes.html', themes=themes, user=user)
     else:
         abort(404)
 
-@study_page.route('/explore/<int:study_page_number>', methods=['GET'])
-@study_page.route('/explore', methods=['GET'])
-def explore(study_page_number=1):
-    place = request.args.get('place')
-    try:
-        lng = float(request.args.get('lng'))
-        lat = float(request.args.get('lat'))
-        studies = Study.objects(location__near=[lng, lat], location__max_distance=10000,
-                               cancel=False).order_by('-start_datetime').paginate(page=study_page_number, per_page=4)
-        return render_template('study/explore.html', studies=studies, place=place, lng=lng, lat=lat)
-    except:
-        return render_template('study/explore.html', place=place)
+# @study_page.route('/explore/<int:study_page_number>', methods=['GET'])
+# @study_page.route('/explore', methods=['GET'])
+# def explore(study_page_number=1):
+#     place = request.args.get('place')
+#     try:
+#         lng = float(request.args.get('lng'))
+#         lat = float(request.args.get('lat'))
+#         studies = Study.objects(location__near=[lng, lat], location__max_distance=10000,
+#                                cancel=False).order_by('-start_datetime').paginate(page=study_page_number, per_page=4)
+#         return render_template('study/explore.html', studies=studies, place=place, lng=lng, lat=lat)
+#     except:
+#         return render_template('study/explore.html', place=place)
 
 @study_page.route('/create_themes', methods=['GET', 'POST'])
 @login_required
@@ -290,7 +282,6 @@ def create_themes():
 def search(study_page_number=1):
     tag_name = request.args.get('tag')
     try:
-        # tag = Study.objects.filter(tag=tag_name).first()
         studies = Study.objects.filter(tag=tag_name,
                                        cancel=False).order_by('-start_datetime').paginate(page=study_page_number, per_page=4)
 

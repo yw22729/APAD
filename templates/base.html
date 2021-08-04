@@ -36,21 +36,18 @@
     <div class="collapse navbar-collapse" id="navbarsExampleDefault">
       <ul class="navbar-nav ml-auto">
 
-        <li class="nav-item {% if request.endpoint == 'study_page.create' %}active{% endif %}">
-          <a class="nav-link" href="{{ url_for('study_page.create') }}">Create a Study</a>
-        </li>
-        <!-- <li class="nav-item {% if request.endpoint == 'study_page.explore' %}active{% endif %}">
-          <a class="nav-link" href="{{ url_for('study_page.explore') }}">Explore</a>
-        </li> -->
         <li class="nav-item {% if request.endpoint == 'study_page.search' %}active{% endif %}">
           <a class="nav-link" href="{{ url_for('study_page.search') }}">Search</a>
         </li>
+        <li class="nav-item {% if request.endpoint == 'study_page.create' %}active{% endif %}">
+          <a class="nav-link" href="{{ url_for('study_page.create') }}">Create Study</a>
+        </li>
         <li class="nav-item {% if request.endpoint == 'study_page.create_themes' %}active{% endif %}">
-          <a class="nav-link" href="{{ url_for('study_page.create_themes') }}">Create Themes</a>
-        </li> 
+          <a class="nav-link" href="{{ url_for('study_page.create_themes') }}">Create Theme</a>
+        </li>
         <li class="nav-item {% if request.endpoint == 'study_page.manage_theme' %}active{% endif %}">
           <a class="nav-link" href="{{ url_for('study_page.manage_theme') }}">Manage Themes</a>
-        </li> 
+        </li>
         {% if session.email %}
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" id="navbarsExampleDefault" aria-haspopup="true" aria-expanded="false">{{ session.email }}</a>

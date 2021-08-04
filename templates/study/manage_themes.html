@@ -5,6 +5,7 @@
 <h1>
     Themes
 </h1>
+<br>
 {% if error %}
 <div class="alert alert-danger">
     {{ error }}
@@ -18,7 +19,7 @@
 {% endif %}
 
 <div class="row">
-    {% for theme in themes.items %}
+    {% for theme in themes %}
     <div class="col-md-6 study-item">
         <div class="card">
             {% if theme.theme_photo %}
@@ -35,7 +36,6 @@
                 <p class="card-text">
                     {{ theme.description[:150] }}
                 </p>
-              
                 <p>
                     {% if user in theme.subscribers %}
                         <a href="{{ url_for('study_page.leave_theme', id=theme.id) }}" class="btn btn-danger">Unsubscribe</a>
@@ -50,29 +50,4 @@
     {% endfor %}
 </div>
 
-<!-- <div class="row justify-content-center">
-    <ul class="pagination">
-        {% if themes.has_prev %}
-        <li class="page-item">
-            <a class="page-link" href="{{ url_for('study_page.manage_theme',
-                                       study_page_number=themes.prev_num) }}">
-                <span>&laquo;</span>
-            </a>
-        </li>
-        {% endif %}
-        <li class="page-item">
-            <p class="page-link">
-                Page {{ themes.page }} of {{ themes.pages }}
-            </p>
-        </li>
-        {% if themes.has_next %}
-        <li class="page-item">
-            <a class="page-link" href="{{ url_for('study_page.manage_theme',
-                                       study_page_number=themes.next_num) }}">
-                <span>&raquo;</span>
-            </a>
-        </li>
-        {% endif %}
-    </ul>
-</div> -->
 {% endblock %}
