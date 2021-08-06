@@ -6,14 +6,18 @@
     <div id="map"></div>
     data = {{ data }}
     <script type="text/javascript">
-    const app = async () => {
-        const locations = await data
+    console.log(data)
+    
+        
         function initMap() {
+            let locations = data
+            console.log(data)
             const myLatLng = { lat: 30.274212, lng: -97.743519 };
             const map = new google.maps.Map(document.getElementById("map"), {
             zoom: 4,
             center: myLatLng,
             });
+           
             for (let x = 0; x < locations.length; x++ ){
                 console.log(locations[x])
                 new google.maps.Marker({
@@ -23,8 +27,8 @@
             });
         }
       }
-    };
-    app();
+
+   
 
     // const locations = data
     // function initMap() {
