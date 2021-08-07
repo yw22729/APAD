@@ -17,6 +17,9 @@ class BasicStudyForm(FlaskForm):
     end_datetime = DateTimeField('End Time',
                                 validators=[validators.DataRequired()],
                                 format='%Y-%m-%d %H:%M')
+    photo = FileField('Study photo',
+                     validators=[FileAllowed(['jpg', 'jpeg', 'png', 'gif'],
+                                             'Only allow .jpg .png and .gif files')])
     description = StringField('Description', widget=TextArea(), validators=[validators.Length(min=50)])
     tag = StringField('Tag', validators=[validators.DataRequired()])
 

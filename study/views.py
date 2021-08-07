@@ -35,6 +35,13 @@ def create():
                 tag = form.tag.data.split(", ")
             )
             study.save()
+            image_url = upload_image_file(request.files.get('photo'), 'study_photo', str(study.id))
+            print(image_url)
+            if image_url:
+                study.study_photo = image_url
+            else:
+                print("image uupload not working")
+            study.save()
             return redirect(url_for('study_page.edit', id=study.id))
     return render_template('study/create.html', form=form)
 

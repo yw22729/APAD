@@ -16,7 +16,7 @@
         {% endif %}
 
         {% from "_formhelpers.html" import render_field %}
-        <form method="POST" action="{{ url_for('study_page.create')}}" >
+        <form method="POST" action="{{ url_for('study_page.create')}}" enctype="multipart/form-data">
             {{ form.csrf_token }}
             {{ render_field(form.name, class="form-control") }}
             {{ render_field(form.theme, class="form-control") }}
@@ -26,6 +26,7 @@
             {{ render_field(form.lat, class="form-control", id="lat", readonly=true) }}
             {{ render_field(form.start_datetime, class="form-control", placeholder="e.g. YYYY-MM-DD HH:MM") }}
             {{ render_field(form.end_datetime, class="form-control", placeholder="e.g. YYYY-MM-DD HH:MM") }}
+            {{ render_field(form.photo, class="form-control") }}
             {{ render_field(form.description, class="form-control", rows="8", minlength="50") }}
             {{ render_field(form.tag, class="form-control", placeholder="Seperate by a comma and a space") }}
             <br>

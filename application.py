@@ -35,7 +35,7 @@ def create_app(config=None):
             data.append({'icon': 'http://maps.google.com/mapfiles/ms/icons/green-dot.png', 
             'lng': study.location["coordinates"][0], 
             'lat': study.location["coordinates"][1], 
-            'infobox': f"<img width=100% height=100% src='{study.study_photo}'/>" })
+            'infobox': f"<img width=100px height=100px src='{study.study_photo}'/>" })
         # creating a map in the view
         print(data)
         mymap = Map(
@@ -51,6 +51,7 @@ def create_app(config=None):
             markers= data,
             style="height:80%;width:100%;",
             zoom=12
+
         )
         return render_template('map.html', mymap=mymap, sndmap=sndmap,data=data)
     return app
