@@ -66,11 +66,11 @@
             {% else %}
             <img class="card-img-top study-photo-item" src="{{ url_for('static', filename='img/study.png')}}">
             {% endif %}
-            </a>
             <div class="card-block">
                 <h4 class="card-title">
                     {{ study.name }}
                 </h4>
+            </a>
                 <p class="card-text">
                     {{ study.description[:150] }}
                 </p>

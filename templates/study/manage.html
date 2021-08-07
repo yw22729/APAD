@@ -10,6 +10,7 @@
     {% for study in studies %}
     <div class="col-md-6 study-item">
         <div class="card">
+            <a href="{{ url_for('study_page.public', id=study.id) }}" target="_blank">
             {% if study.study_photo %}
             <img class="card-img-top study-photo-item" src="{{ study.study_photo}}">
             {% else %}
@@ -19,6 +20,7 @@
                 <h4 class="card-title">
                     {{ study.name }}
                 </h4>
+            </a>
                 <p class="card-text">
                     {{ study.description[:150] }}
                 </p>
@@ -35,7 +37,7 @@
                     {{ study.attendees|length }} attending
                     <br>
                     <i class="fa fa-users" aria-hidden="true"></i>
-                    Theme: {{ study.theme }}
+                    Theme: <a href="{{ url_for('study_page.public_theme', id=study.theme) }}" target="_blank"></a>{{ study.theme }}</a>
                     <br>
                     <i class="fa fa-tag" aria-hidden="true"></i>
                     Tag:

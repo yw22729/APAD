@@ -7,6 +7,7 @@ from user.models import User
 from utilities.storage import upload_image_file
 import json
 
+
 study_page = Blueprint('study_page', __name__)
 
 @study_page.route('/create', methods=['GET', 'POST'])
@@ -275,13 +276,13 @@ def search(study_page_number=1):
     except:
         return render_template('study/search.html', tag=tag_name)
 
-@study_page.route('/map', methods=['GET'])
-def map():
-    studies = Study.objects
-    data = []
-    for study in studies:
-        data.append({"lat": study.location["coordinates"][0], "lng": study.location["coordinates"][1] })
+# @study_page.route('/map', methods=['GET'])
+# def map():
+#     studies = Study.objects
+#     data = []
+#     for study in studies:
+#         data.append({"lat": study.location["coordinates"][0], "lng": study.location["coordinates"][1] })
 
-    data2 = json.dumps(data)
-    print(data2)
-    return render_template('study/map.html', data=data2)
+#     data2 = json.dumps(data)
+#     print(data2)
+#     return render_template('study/map.html', data=data2)

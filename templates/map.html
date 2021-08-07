@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block title %}Map{% endblock %}
+{% block content %}
+  <head>
+    {{"decoupled-map"|googlemap_js(37.4419, -122.1419, markers=[(37.4419,
+    -122.1419)])}} {{mymap.js}} {{sndmap.js}}
+  </head>
+  <body>
+    {{sndmap.html}}
+  </body>
+  {% endblock %}

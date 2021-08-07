@@ -24,9 +24,10 @@ def create_app(config=None):
     @app.route('/')
     def home():
         return redirect(url_for('study_page.search'))
+
     from study.models import Study
-    @app.route("/map1")
-    def mapview():
+    @app.route("/map")
+    def map():
 
         studies = Study.objects
         data = []
@@ -47,27 +48,9 @@ def create_app(config=None):
             identifier="sndmap",
             lat=30.2880433,
             lng=-97.7308176,
-            markers= data
-
-            # , {'icon': 'http://maps.google.com/mapfiles/ms/icons/green-dot.png', 'lat': -97.7430608, 'lng': 30.267153, 'infobox': '<b>Hello World</b>'}, {'icon': 'http://maps.google.com/mapfiles/ms/icons/green-dot.png', 'lat': -96.67055030000002, 'lng': 33.1031744, 'infobox': '<b>Hello World</b>'}, {'icon': 'http://maps.google.com/mapfiles/ms/icons/green-dot.png', 'lat': -97.6779842, 'lng': 30.6332618, 'infobox': '<b>Hello World</b>'}, {'icon': 'http://maps.google.com/mapfiles/ms/icons/green-dot.png', 'lat': -98.1244531, 'lng': 29.7030024, 'infobox': '<b>Hello World</b>'}]
-            
-            
-            
-            
-            # [
-            # {
-            #     'icon': 'http://maps.google.com/mapfiles/ms/icons/green-dot.png',
-            #     'lat': 37.4419,
-            #     'lng': -122.1419,
-            #     'infobox': "<b>Hello World</b>"
-            # },
-            # {
-            #     'icon': 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png',
-            #     'lat': 37.4300,
-            #     'lng': -122.1400,
-            #     'infobox': "<b>Hello World from other place</b>"
-            # }
-            # ]
+            markers= data,
+            style="height:80%;width:100%;",
+            zoom=12
         )
-        return render_template('example.html', mymap=mymap, sndmap=sndmap,data=data)
+        return render_template('map.html', mymap=mymap, sndmap=sndmap,data=data)
     return app
