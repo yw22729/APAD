@@ -6,7 +6,6 @@ from flask_wtf.file import FileField, FileAllowed
 class BasicStudyForm(FlaskForm):
     name = StringField('Study Name', validators=[validators.DataRequired(), validators.Length(min=2, max=80)])
     theme = SelectField('Theme', validators=[validators.DataRequired()])
-    # place = StringField('Place', validators=[validators.DataRequired()], widget=TextArea())
     gplace = StringField('Google Place API')
     place = StringField('Place', validators=[validators.DataRequired()], widget=TextArea())
     lng = FloatField('Longitude', validators=[validators.Optional()])
@@ -18,7 +17,7 @@ class BasicStudyForm(FlaskForm):
                                 validators=[validators.DataRequired()],
                                 format='%Y-%m-%d %H:%M')
     photo = FileField('Study photo',
-                     validators=[FileAllowed(['jpg', 'jpeg', 'png', 'gif'],
+                     validators=[validators.InputRequired(),FileAllowed(['jpg', 'jpeg', 'png', 'gif'],
                                              'Only allow .jpg .png and .gif files')])
     description = StringField('Description', widget=TextArea(), validators=[validators.Length(min=50)])
     tag = StringField('Tag', validators=[validators.DataRequired()])
