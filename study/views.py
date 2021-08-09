@@ -17,9 +17,12 @@ def create():
     error = None
     themes = Theme.objects
     form.theme.choices = [theme.name for theme in themes]
+    form.theme.choices.insert(0, "---Select A Theme---")
     if request.method == 'POST' and form.validate():
         if form.end_datetime.data < form.start_datetime.data:
             error = "A study must end after it starts!"
+        if form.theme.data == "---Select A Theme---":
+            error = "Please select a theme!"
         if not error:
             user = User.objects.filter(email=session.get('email')).first()
             study = Study(
@@ -43,7 +46,7 @@ def create():
                 print("image uupload not working")
             study.save()
             return redirect(url_for('study_page.edit', id=study.id))
-    return render_template('study/create.html', form=form)
+    return render_template('study/create.html', form=form, error=error)
 
 @study_page.route('/<id>/edit', methods=['GET', 'POST'])
 @login_required
@@ -60,9 +63,12 @@ def edit(id):
         form = EditStudyForm(obj=study)
         themes = Theme.objects
         form.theme.choices = [theme.name for theme in themes]
+        form.theme.choices.insert(0, "---Select A Theme---")
         if request.method == 'POST' and form.validate():
             if form.end_datetime.data < form.start_datetime.data:
                 error = 'A study must end after it starts!'
+            if form.theme.data == "---Select A Theme---":
+                error = "Please select a theme!"
             if not error:
                 form.populate_obj(study)
                 if form.lng.data and form.lat.data:
@@ -148,7 +154,7 @@ def public_theme(id):
         abort(404)
     if theme:
         user = User.objects.filter(email=session.get('email')).first()
-        studies = Study.objects.filter(theme=theme.name)
+        studies = Study.objects.filter(theme=theme.name,cancel=False)
         return render_template('study/public_theme.html', theme=theme, user=user, studies=studies)
     else:
         abort(404)
