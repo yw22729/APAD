@@ -1,4 +1,4 @@
-from flask import Flask, redirect, url_for, render_template
+from flask import Flask, redirect, url_for, render_template, json, jsonify, Response, make_response
 from flask_mongoengine import MongoEngine
 from flask_googlemaps import GoogleMaps
 from flask_googlemaps import Map
@@ -51,4 +51,9 @@ def create_app(config=None):
 
         )
         return render_template('map.html', sndmap=sndmap,data=data)
+
+    @app.route('/json/')
+    def studies_json():
+        studies = Study.objects
+        return jsonify(studies)
     return app

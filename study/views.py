@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, session, redirect, url_for, abort
+from flask import Blueprint, render_template, request, session, redirect, url_for, abort, jsonify
 import bson
 from study.forms import BasicStudyForm, EditStudyForm, CancelStudyForm, ThemesForm, EditThemeForm
 from user.decorators import login_required
@@ -288,14 +288,3 @@ def search(study_page_number=1):
         return render_template('study/search.html', studies=studies, tag=tag_name)
     except:
         return render_template('study/search.html', tag=tag_name)
-
-# @study_page.route('/map', methods=['GET'])
-# def map():
-#     studies = Study.objects
-#     data = []
-#     for study in studies:
-#         data.append({"lat": study.location["coordinates"][0], "lng": study.location["coordinates"][1] })
-
-#     data2 = json.dumps(data)
-#     print(data2)
-#     return render_template('study/map.html', data=data2)
