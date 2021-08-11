@@ -48,7 +48,6 @@ def create_app(config=None):
             cluster=True,
             cluster_imagepath="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m"
 
-
         )
         return render_template('map.html', sndmap=sndmap,data=data)
 

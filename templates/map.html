@@ -1,28 +1,12 @@
 {% extends "base.html" %}
 {% block title %}Map{% endblock %}
 {% block content %}
-  <head>
-
-  </head>
-  <body>
-    <head>
-
-
-
-        <script src="//maps.googleapis.com/maps/api/js?key=AIzaSyCRQzAIwUhY_dp-FhBEdtxzNZQ2m0_zvdQ&language=en&region=US" type="text/javascript"></script>
-
-
-
-
-
-        <script src="//cdnjs.cloudflare.com/ajax/libs/js-marker-clusterer/1.0.0/markerclusterer_compiled.js" type="text/javascript"></script>
-
-
-
+<head>
+  <script src="//maps.googleapis.com/maps/api/js?key=AIzaSyCRQzAIwUhY_dp-FhBEdtxzNZQ2m0_zvdQ&language=en&region=US" type="text/javascript"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/js-marker-clusterer/1.0.0/markerclusterer_compiled.js" type="text/javascript"></script>
 <style type="text/css">
       #sndmap { height:80%;width:100%; }
 </style>
-
 <script type="text/javascript">
     var map = null;
     var map_markers = [];
@@ -53,7 +37,8 @@
 
 
         // add gmap markers
-        var raw_markers = [{"icon": "http://maps.google.com/mapfiles/ms/icons/green-dot.png", "infobox": "\u003cimg width=100px height=100px src=\u0027https://storage.googleapis.com/apad-bucket/study_photo%2F61086ad9ea73b7e8df59749f-2021-08-02-221105.png\u0027/\u003e", "lat": 33.1255321, "lng": -96.68567859999999}, {"icon": "http://maps.google.com/mapfiles/ms/icons/green-dot.png", "infobox": "\u003cimg width=100px height=100px src=\u0027None\u0027/\u003e", "lat": 30.267153, "lng": -97.7430608}, {"icon": "http://maps.google.com/mapfiles/ms/icons/green-dot.png", "infobox": "\u003cimg width=100px height=100px src=\u0027None\u0027/\u003e", "lat": 33.1031744, "lng": -96.67055030000002}, {"icon": "http://maps.google.com/mapfiles/ms/icons/green-dot.png", "infobox": "\u003cimg width=100px height=100px src=\u0027None\u0027/\u003e", "lat": 30.6332618, "lng": -97.6779842}, {"icon": "http://maps.google.com/mapfiles/ms/icons/green-dot.png", "infobox": "\u003cimg width=100px height=100px src=\u0027None\u0027/\u003e", "lat": 29.7030024, "lng": -98.1244531}, {"icon": "http://maps.google.com/mapfiles/ms/icons/green-dot.png", "infobox": "\u003cimg width=100px height=100px src=\u0027None\u0027/\u003e", "lat": 30.2880183, "lng": -97.7287618}, {"icon": "http://maps.google.com/mapfiles/ms/icons/green-dot.png", "infobox": "\u003cimg width=100px height=100px src=\u0027None\u0027/\u003e", "lat": 33.1255321, "lng": -96.68567859999999}, {"icon": "http://maps.google.com/mapfiles/ms/icons/green-dot.png", "infobox": "\u003cimg width=100px height=100px src=\u0027None\u0027/\u003e", "lat": 30.267153, "lng": -97.7430608}, {"icon": "http://maps.google.com/mapfiles/ms/icons/green-dot.png", "infobox": "\u003cimg width=100px height=100px src=\u0027None\u0027/\u003e", "lat": 33.1031744, "lng": -96.67055030000002}, {"icon": "http://maps.google.com/mapfiles/ms/icons/green-dot.png", "infobox": "\u003cimg width=100px height=100px src=\u0027None\u0027/\u003e", "lat": 32.7766642, "lng": -96.79698789999999}, {"icon": "http://maps.google.com/mapfiles/ms/icons/green-dot.png", "infobox": "\u003cimg width=100px height=100px src=\u0027https://storage.googleapis.com/apad-bucket/study_photo%2F610ef025377896afc4eef8c6-2021-08-07-204213.png\u0027/\u003e", "lat": 32.7766642, "lng": -96.79698789999999}, {"icon": "http://maps.google.com/mapfiles/ms/icons/green-dot.png", "infobox": "\u003cimg width=100px height=100px src=\u0027None\u0027/\u003e", "lat": 30.267153, "lng": -97.7430608}, {"icon": "http://maps.google.com/mapfiles/ms/icons/green-dot.png", "infobox": "\u003cimg width=100px height=100px src=\u0027None\u0027/\u003e", "lat": 30.267153, "lng": -97.7430608}, {"icon": "http://maps.google.com/mapfiles/ms/icons/green-dot.png", "infobox": "\u003cimg width=100px height=100px src=\u0027None\u0027/\u003e", "lat": 30.267153, "lng": -97.7430608}];
+        var data = {{ data|tojson }};
+        var raw_markers = data;
         for(i=0; i<14;i++) {
             map_markers[i] = new google.maps.Marker({
                 position: new google.maps.LatLng(raw_markers[i].lat, raw_markers[i].lng),
@@ -212,7 +197,7 @@
 </script>
   </head>
   <body>
-    <div id="sndmap" class="map"></div>
+    {{sndmap.html}}
   </body>
 
   {% endblock %}
