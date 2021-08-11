@@ -51,8 +51,20 @@ def create_app(config=None):
         )
         return render_template('map.html', sndmap=sndmap,data=data)
 
-    @app.route('/json/')
+    @app.route('/json/studies')
     def studies_json():
         studies = Study.objects
         return jsonify(studies)
+
+    from study.models import Theme
+    @app.route('/json/themes')
+    def themes_json():
+        themes = Theme.objects
+        return jsonify(themes)
+
+    from user.models import User
+    @app.route('/json/users')
+    def users_json():
+        users = User.objects
+        return jsonify(users)
     return app
