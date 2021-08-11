@@ -39,11 +39,8 @@ def create():
             )
             study.save()
             image_url = upload_image_file(request.files.get('photo'), 'study_photo', str(study.id))
-            print(image_url)
             if image_url:
                 study.study_photo = image_url
-            else:
-                print("image uupload not working")
             study.save()
             return redirect(url_for('study_page.edit', id=study.id))
     return render_template('study/create.html', form=form, error=error)
@@ -244,19 +241,6 @@ def manage_theme():
     else:
         abort(404)
 
-# @study_page.route('/explore/<int:study_page_number>', methods=['GET'])
-# @study_page.route('/explore', methods=['GET'])
-# def explore(study_page_number=1):
-#     place = request.args.get('place')
-#     try:
-#         lng = float(request.args.get('lng'))
-#         lat = float(request.args.get('lat'))
-#         studies = Study.objects(location__near=[lng, lat], location__max_distance=10000,
-#                                cancel=False).order_by('-start_datetime').paginate(page=study_page_number, per_page=4)
-#         return render_template('study/explore.html', studies=studies, place=place, lng=lng, lat=lat)
-#     except:
-#         return render_template('study/explore.html', place=place)
-
 @study_page.route('/create_themes', methods=['GET', 'POST'])
 @login_required
 def create_themes():
@@ -272,6 +256,10 @@ def create_themes():
                 description=form.description.data,
                 subscribers=[user.id]
             )
+            theme.save()
+            image_url = upload_image_file(request.files.get('photo'), 'theme_photo', str(theme.id))
+            if image_url:
+                theme.theme_photo = image_url
             theme.save()
             message = 'Theme created'
             return redirect(url_for('study_page.manage_theme',message=message))

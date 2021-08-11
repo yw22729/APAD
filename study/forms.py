@@ -34,6 +34,9 @@ class CancelStudyForm(FlaskForm):
 class ThemesForm(FlaskForm):
     name = StringField('Name', validators=[validators.DataRequired(), validators.Length(min=2, max=20)])
     description = StringField('Description', widget=TextArea(), validators=[validators.Length(min=10)])
+    photo = FileField('Theme photo',
+                     validators=[validators.InputRequired(),FileAllowed(['jpg', 'jpeg', 'png', 'gif'],
+                                             'Only allow .jpg .png and .gif files')])
 
 class EditThemeForm(ThemesForm):
     photo = FileField('Theme photo',
