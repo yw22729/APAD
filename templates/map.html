@@ -39,7 +39,7 @@
         // add gmap markers
         var data = {{ data|tojson }};
         var raw_markers = data;
-        for(i=0; i<14;i++) {
+        for(i=0; i<raw_markers.length;i++) {
             map_markers[i] = new google.maps.Marker({
                 position: new google.maps.LatLng(raw_markers[i].lat, raw_markers[i].lng),
                 map: map,
@@ -58,6 +58,7 @@
 
            }
         }
+        var markerCluster = new MarkerClusterer(map, map_markers, {'imagePath': "https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m", 'gridSize': 60});
 
 
 
@@ -163,8 +164,6 @@
            }
         }
 
-
-    	    var markerCluster = new MarkerClusterer(map, map_markers, {'imagePath': "https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m", 'gridSize': 60});
 
     }
 

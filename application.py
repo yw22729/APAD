@@ -44,10 +44,7 @@ def create_app(config=None):
             lng=-97.7308176,
             markers= data,
             style="height:80%;width:100%;",
-            zoom=12,
-            cluster=True,
-            cluster_imagepath="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m"
-
+            zoom=12
         )
         return render_template('map.html', sndmap=sndmap,data=data)
 
