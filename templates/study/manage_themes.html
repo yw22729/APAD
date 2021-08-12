@@ -28,7 +28,7 @@
             <img class="card-img-top study-photo-item" src="{{ url_for('static', filename='img/study.png')}}">
             {% endif %}
             <div class="card-block">
-                <a href="{{ url_for('study_page.public_theme', id=theme.id) }}" target="_blank">
+                <a href="{{ url_for('study_page.public_theme', id=theme.id) }}">
                     <h4 class="card-title">
                         {{ theme.name }}
                     </h4>

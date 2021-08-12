@@ -36,8 +36,6 @@ def create_app(config=None):
             'lng': study.location["coordinates"][0],
             'lat': study.location["coordinates"][1],
             'infobox': f"<img width=100px height=100px src='{study.study_photo}'/>" })
-        # creating a map in the view
-        # print(data)
         sndmap = Map(
             identifier="sndmap",
             lat=30.2880433,

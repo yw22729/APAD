@@ -6,19 +6,19 @@
         <h3>
             {{ study.name }}
         </h3>
-        
+
         {% if error %}
         <div class="alert alert-danger">
             {{ error }}
         </div>
         {% endif %}
-        
+
         {% from "_formhelpers.html" import render_field %}
         <form method="POST" action="{{ url_for('study_page.cancel', id=study.id) }}">
-            
+
             {{ form.csrf_token }}
             {{ render_field(form.confirm, class="form-control") }}
-            
+
             <button type="submit" class="btn btn-danger">
                 Cancel Study
             </button>

@@ -60,7 +60,7 @@
     {% for study in studies %}
     <div class="col-md-6 study-item">
         <div class="card">
-          <a href="{{ url_for('study_page.public', id=study.id) }}" target="_blank">
+          <a href="{{ url_for('study_page.public', id=study.id) }}">
             {% if study.study_photo %}
             <img class="card-img-top study-photo-item" src="{{ study.study_photo}}">
             {% else %}
@@ -76,7 +76,7 @@
                 </p>
                 <p class="card-text">
                     <i class="fa fa-map-marker" aria-hidden="true"></i>
-                    <a href="http://maps.google.com?q={{ study.place }}" target="_blank">
+                    <a href="http://maps.google.com?q={{ study.place }}" >
                     {{ study.place }}
                     </a>
                     <br>
