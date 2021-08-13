@@ -38,14 +38,14 @@
             {{ render_field(form.photo, class="form-control") }}
             {{ render_field(form.description, class="form-control", rows="8", minlength="50") }}
 
-            <!-- {% if theme.cancel %}
+            {% if theme.cancel %}
             This theme is canceled
             {% else %}
             <button type="submit" class="btn btn-success">
                 Save
             </button>
-            <a class="btn btn-secondary" href="{{ url_for('study_page.cancel', id=theme.id) }}">Cancel study</a>
-            {% endif %} -->
+            <!-- <a class="btn btn-secondary" href="{{ url_for('study_page.cancel', id=theme.id) }}">Cancel study</a> -->
+            {% endif %}
         </form>
     </div>
 </div>
