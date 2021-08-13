@@ -2,7 +2,7 @@ from flask import Flask, redirect, url_for, render_template, json, jsonify, Resp
 from flask_mongoengine import MongoEngine
 from flask_googlemaps import GoogleMaps
 from flask_googlemaps import Map
-
+import bcrypt
 
 db = MongoEngine()
 def create_app(config=None):
@@ -79,4 +79,11 @@ def create_app(config=None):
         user = User.objects.filter(email=email.lower()).first()
         studies = Study.objects.filter(host=user.id).order_by('-start_datetime')
         return jsonify(studies)
+
+    @app.route('/json/user_login/<email>/<password>')
+    def user_login(email, password):
+        user = User.objects.filter(email=email.lower()).first()
+        if bcrypt.checkpw(password, user.password):
+            result = [{"result":"true"}]
+            return jsonify(result)
     return app
