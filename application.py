@@ -68,13 +68,15 @@ def create_app(config=None):
         users = User.objects
         return jsonify(users)
 
-    @app.route('/json/user_themes/<id>')
-    def users_themes(id):
-        themes = Theme.objects.filter(subscribers=id)
+    @app.route('/json/user_themes/<email>')
+    def users_themes(email):
+        user = User.objects.filter(email=email.lower()).first()
+        themes = Theme.objects.filter(subscribers=user.id)
         return jsonify(themes)
 
-    @app.route('/json/user_studies/<id>')
-    def users_studies(id):
-        studies = Study.objects.filter(host=id).order_by('-start_datetime')
+    @app.route('/json/user_studies/<email>')
+    def users_studies(email):
+        user = User.objects.filter(email=email.lower()).first()
+        studies = Study.objects.filter(host=user.id).order_by('-start_datetime')
         return jsonify(studies)
     return app
