@@ -83,8 +83,11 @@ def create_app(config=None):
     @app.route('/json/user_login/<email>/<password>')
     def user_login(email, password):
         user = User.objects.filter(email=email.lower()).first()
-        if bcrypt.checkpw(password, user.password):
-            result = [{"result":"true"}]
+        if user:
+            if bcrypt.checkpw(password, user.password):
+                result = [{"result":"true"}]
+            else:
+                result = [{"result":"false"}]
         else:
             result = [{"result":"false"}]
         return jsonify(result)
