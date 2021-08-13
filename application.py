@@ -57,9 +57,24 @@ def create_app(config=None):
         themes = Theme.objects
         return jsonify(themes)
 
+    @app.route('/json/themes/<name>')
+    def studies_in_theme(name):
+        studies = Study.objects.filter(theme=name,cancel=False)
+        return jsonify(studies)
+
     from user.models import User
     @app.route('/json/users')
     def users_json():
         users = User.objects
         return jsonify(users)
+
+    @app.route('/json/user_themes/<id>')
+    def users_themes(id):
+        themes = Theme.objects.filter(subscribers=id)
+        return jsonify(themes)
+
+    @app.route('/json/user_studies/<id>')
+    def users_studies(id):
+        studies = Study.objects.filter(host=id).order_by('-start_datetime')
+        return jsonify(studies)
     return app
