@@ -85,5 +85,7 @@ def create_app(config=None):
         user = User.objects.filter(email=email.lower()).first()
         if bcrypt.checkpw(password, user.password):
             result = [{"result":"true"}]
-            return jsonify(result)
+        else:
+            result = [{"result":"false"}]
+        return jsonify(result)
     return app
