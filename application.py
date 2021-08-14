@@ -134,8 +134,8 @@ def create_app(config=None):
             study.save()
             return "true"
         except Exception as inst:
-            print(inst.args)
-            return "false"
+            print("has error")
+            return str(inst)
 
 
     return app
