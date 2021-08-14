@@ -3,6 +3,7 @@ from flask_mongoengine import MongoEngine
 from flask_googlemaps import GoogleMaps
 from flask_googlemaps import Map
 import bcrypt
+from flask import request
 
 db = MongoEngine()
 def create_app(config=None):
@@ -91,4 +92,50 @@ def create_app(config=None):
         else:
             result = [{"result":"false"}]
         return jsonify(result)
+
+    @app.route('/json/create', methods=['GET', 'POST'])
+    def user_create():
+        result = request.args.to_dict(flat=False)
+        print(request.args)
+        print(request.args.getlist('location'))
+        email = result['email'][0]
+        name = result['name'][0]
+        location = [float(i) for i in request.args.getlist('location')]
+        place = result['place'][0]
+        theme = result['theme'][0]
+        description=result["description"][0]
+        tag=request.args.getlist('tag')
+        start_time=result["start_time"][0]
+        end_time=result["end_time"][0]
+        image_url=result["image_url"][0]
+
+        try:
+            user = User.objects.filter(email=email).first()
+            print(user)
+            study = Study(
+                name=name,
+                place=place,
+                location=location,
+                theme = theme,
+                start_datetime=start_time,
+                end_datetime=end_time,
+                description=description,
+                host=user.id,
+                attendees=[user],
+                tag = tag
+            )
+            print(study)
+            study.save()
+
+
+            # image_url = upload_image_file(request.files.get('photo'), 'study_photo', str(study.id))
+            if image_url:
+                study.study_photo = image_url
+            study.save()
+            return "true"
+        except Exception as inst:
+            print(inst.args)
+            return "false"
+
+
     return app
