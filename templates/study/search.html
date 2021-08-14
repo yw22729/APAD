@@ -86,7 +86,7 @@
         {% if studies.has_prev %}
         <li class="page-item">
             <a class="page-link" href="{{ url_for('study_page.search',
-                                       study_page_number=studies.prev_num, tags=tags) }}">
+                                       study_page_number=studies.prev_num, tag=tag) }}">
                 <span>&laquo;</span>
             </a>
         </li>
@@ -99,7 +99,7 @@
         {% if studies.has_next %}
         <li class="page-item">
             <a class="page-link" href="{{ url_for('study_page.search',
-                                       study_page_number=studies.next_num, tags=tags) }}">
+                                       study_page_number=studies.next_num, tag=tag) }}">
                 <span>&raquo;</span>
             </a>
         </li>
