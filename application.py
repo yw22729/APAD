@@ -4,8 +4,6 @@ from flask_googlemaps import GoogleMaps
 from flask_googlemaps import Map
 import bcrypt
 from flask import request
-from datetime import datetime
-from dateutil import parser
 
 
 db = MongoEngine()
@@ -96,6 +94,8 @@ def create_app(config=None):
             result = [{"result":"false"}]
         return jsonify(result)
 
+    from datetime import datetime
+    from dateutil import parser
     @app.route('/json/create', methods=['GET', 'POST'])
     def user_create():
 
@@ -108,7 +108,7 @@ def create_app(config=None):
         place = result['place'][0]
         theme = result['theme'][0]
         description=result["description"][0]
-        tag=request.args.getlist('tag')
+        tag=result['tag'][0]
         startTime = parser.parse(result["start_time"][0])
         print(startTime)
         start_time=startTime
@@ -129,7 +129,7 @@ def create_app(config=None):
                 description=description,
                 host=user.id,
                 attendees=[user],
-                tag = tag
+                tag = tag.split(", ")
             )
             print(study)
             study.save()

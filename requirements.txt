@@ -3,3 +3,4 @@ flask_mongoengine==1.0.0
 py-bcrypt==0.4
 google-cloud==0.29.0
 flask_googlemaps==0.4.0
+python-dateutil==2.8.2
