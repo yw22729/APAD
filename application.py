@@ -112,7 +112,7 @@ def create_app(config=None):
         startTime = parser.parse(result["start_time"][0])
         print(startTime)
         start_time=startTime
-        endTime = parser.parse(result["start_time"][0])
+        endTime = parser.parse(result["end_time"][0])
         end_time=endTime
         image_url=result["image_url"][0]
 
